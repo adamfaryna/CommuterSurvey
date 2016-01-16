@@ -4,4 +4,7 @@ public/build/css
 *.iml
 *.idea
 docs
+.tmp
+dist
+*.log
 

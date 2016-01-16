@@ -5,15 +5,21 @@ var $ = require('gulp-load-plugins')();
 var path = require('path');
 var _ = require('underscore');
 var browserSync = require('browser-sync').create();
+var wiredep = require('wiredep').stream;
+var runSequence = require('run-sequence');
+var rimraf = require('rimraf');
 
 var paths = {
   lint: ['*.js', './public/**/*.js'],
   watch: ['*.js', './public/**', '!bower_components'],
   tests: ['./test/**/*.js'],
+  less_src: './less/*.less',
   client: './public',
-  source: ['./public/app/**/*.js'],
+  src: ['./public/app/**/*.js'],
   html: './public/index.html',
-  build: './public/build'
+  build: './public/build',
+  dist: './dist',
+  livereload: './.tmp'
 };
 
 gulp.task('nodemon', function(cb) {
@@ -41,31 +47,30 @@ gulp.task('lint', function() {
 
 // Compile less into CSS & auto-inject into browsers
 gulp.task('less', function() {
-  return gulp.src('less/*.less')
+  return gulp.src(paths.less_src)
     .pipe($.less())
     .pipe($.autoprefixer({
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest(paths.build))
-    .pipe(browserSync.stream());
+    .pipe(gulp.dist(paths.build));
+    // .pipe(browserSync.stream());
 });
 
 gulp.task('inject', function() {
-  var injectScripts = gulp.src([
-    path.join(paths.client, '/app/app.module.js'),
-    path.join(paths.client, '/app/app.config.js'),
-    path.join(paths.client, '/app/**/*.js')
-  ]);
   // .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'));
+  // var inject_resources = gulp.src(['public/**/*.js', 'public/build/**/*.css']);
+  // var options = config.getWiredeFpDefaultOptions();
+  // options.directory = 'public/bower_components';
 
   return gulp.src(paths.html)
-    .pipe($.inject(injectScripts, { addRootSlash: false }))
-    .pipe($.wiredep(_.extend({}, {
-      directory: paths.client,
-      bowerJson: paths.client
-    })));
-// .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve')));
+    // .pipe
+    // .pipe($.inject(inject_resources, { addRootSlash: false, read: false }))
+    .pipe(wiredep({
+      src: 'public/index.html',
+      directory: 'public/bower_components'
+    }))
+    .pipe(gulp.dest(paths.build));
 });
 
 // gulp.task('minify', ['less'], function() {
@@ -79,19 +84,27 @@ gulp.task('inject', function() {
 //     .pipe(browserSync.stream());
 // });
 
-// gulp.task('clean', function (done) {
-//   $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')], done);
-// });
+gulp.task('clean:tmp', function (done) {
+  return $.del(paths.livereload, done);
+});
+
+gulp.task('clean:dist', function (done) {
+  return $.del(paths.dist, done);
+});
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['less', 'inject', 'nodemon'], function() {
+gulp.task('serve', function() {
   browserSync.init({
     browser: ['firefox'],
-    server: './public',
+    server: paths.livereload,
     port: '3000'
   });
 
-  gulp.watch('less/*.less', ['less']);
+  runSequence('clean:tmp', 'less', ['inject', 'nodemon'], function () {
+    return browserSync.stream;
+  });
+
+  gulp.watch(paths.less_src, ['less']);
   gulp.watch(paths.html).on('change', browserSync.reload);
 });
 
