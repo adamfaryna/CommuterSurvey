@@ -10,7 +10,7 @@ var runSequence = require('run-sequence');
 var del = require('del');
 
 var paths = {
-  lint: ['*.js', './client/**/*.js'],
+  lint: ['*.js', './public/app/**/*.js'],
   // watch: ['*.js', './public/**', '!bower_components'],
   // tests: ['./test/**/*.js'],
   less: './client/less/*.less',
@@ -51,24 +51,23 @@ gulp.task('less', function() {
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest('public/css/style.css'));
+    .pipe(gulp.dest('./public/css'));
     // .pipe(browserSync.stream());
 });
 
 gulp.task('inject', function() {
   // .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'));
-  // var inject_resources = gulp.src(['public/**/*.js', 'public/build/**/*.css']);
+  var inject_resources = gulp.src(['./public/app/**/*.js', './public/app/css/**/*.css'], {read: false});
   // var options = config.getWiredeFpDefaultOptions();
   // options.directory = 'public/bower_components';
 
-  return gulp.src('./client/index.html')
-    // .pipe
-    // .pipe($.inject(inject_resources, { addRootSlash: false, read: false }))
+  return gulp.src('./public/index.html')
     .pipe(wiredep({
-      src: './client/index.html',
+      src: './public/index.html',
       directory: './public/bower_components'
     }))
-    .pipe(gulp.dest('./public/index.html'));
+    .pipe($.inject(inject_resources, { addRootSlash: false, read: false, relative: true }))
+    .pipe(gulp.dest('./public'));
 });
 
 // gulp.task('minify', ['less'], function() {
@@ -82,20 +81,16 @@ gulp.task('inject', function() {
 //     .pipe(browserSync.stream());
 // });
 
-gulp.task('clean', function (done) {
-  del(['./public/*' ,'!bower_components'], done);
+gulp.task('clean', function () {
+  del(['./public/css/*']);
 });
 
 // Static Server + watching scss/html files
-gulp.task('serve', function() {
+gulp.task('serve', ['clean', 'less', 'inject', 'nodemon'], function() {
   browserSync.init({
     browser: ['firefox'],
-    server: paths.html,
+    server: './public',
     port: '3000'
-  });
-
-  runSequence('clean', 'less', ['inject', 'nodemon'], function () {
-    return browserSync.stream;
   });
 
   gulp.watch(paths.less, ['less']);
