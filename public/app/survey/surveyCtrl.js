@@ -1,21 +1,20 @@
-app.controller('surveyCtrl', ['$scope', function($scope) {
+app.controller('surveyCtrl', ['$scope', '$state', function($scope, $state) {
   'use strict';
 
   // $scope.userName
   // $scope.userMood
   $scope.moodOptions = [];
 
-  angular.forEach(['Walk', 'Cycle', 'Car', 'Train', 'Motorbike', 'Tram', 'Other'], function (item) {
-		$scope.moodOptions.push(new MoodOption(item, 0));
+  angular.forEach(['Walk', 'Cycle', 'Car', 'Train', 'Motorbike', 'Tram', 'Other'], function(item) {
+    $scope.moodOptions.push(new MoodOption(item, 0));
   });
 
   function MoodOption(name, count) {
-  	this.name = name;
-  	this.count = count;
+    this.name = name;
+    this.count = count;
   }
 
-  $scope.submit = function () {
-
+  $scope.onSubmit = function() {
+    $state.go('results');
   };
-
 }]);
