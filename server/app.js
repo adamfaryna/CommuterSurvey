@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public/bower_components')));
+// app.use(express.static(path.join(__dirname, 'public/css')));
+// app.use(express.static(path.join(__dirname, 'public/img')));
+// app.use(express.static(path.join(__dirname, 'public/index.html')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
