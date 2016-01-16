@@ -1,0 +1,9 @@
+<label>Results</label>
+<div id="results">
+  <div id="result-graph-legend" ng-repeat="result in results">
+    <div>{{result.type}} - {{result.quantity}} people</div>
+  </div>
+  <div id="result-graph"></div>
+</div>
+
+<a href ng-click="voteAgain()">Vote Again</a>

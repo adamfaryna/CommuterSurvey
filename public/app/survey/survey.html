@@ -1,0 +1,15 @@
+<form name="form" novalidate>
+  <label>Please enter your name</label>
+  <input type="text" name="userName" ng-model="userName">
+  <div ng-show="not empty userName">
+    <label>Hi {{userName}}! Please tell us how you got to work this morning</label>
+    <div ng-repeat="option in moodOptions">
+      <label>
+        <input type="radio" ng-model="userMood" ng-checked="$first">
+        {{userMood}}
+      </label>
+    </div>
+
+    <button type="submit" id="submit" value="Submit">
+  </div>
+</form>

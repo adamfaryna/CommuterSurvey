@@ -1,6 +1,7 @@
 node_modules
 public/bower_components
-public/gen/css
+public/build/css
 *.iml
 *.idea
+docs
 
