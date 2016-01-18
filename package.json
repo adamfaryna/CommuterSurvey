@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "gulp start && node ./bin/www"
+    "start": "gulp start && node app.js",
+    "serve": "PORT=7000 gulp serve",
+    "debug": "gulp start && node-debug app.js"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -11,6 +13,7 @@
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "jade": "~1.11.0",
+    "lokijs": "^1.3.11",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.1.1"

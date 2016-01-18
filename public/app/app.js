@@ -9,12 +9,12 @@ var app = angular.module('main', ['ui.router'])
     .state('survey', {
       url: '/survey',
       templateUrl: 'app/survey/survey.html',
-      controller: 'surveyCtrl'
+      controller: 'SurveyCtrl'
     })
     .state('results', {
       url: '/results',
       templateUrl: 'app/results/results.html',
-      controller: 'resultsCtrl'
+      controller: 'ResultsCtrl'
     });
 
   $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

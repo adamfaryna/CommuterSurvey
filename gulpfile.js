@@ -11,8 +11,6 @@ var del = require('del');
 
 var paths = {
   lint: ['*.js', './public/app/**/*.js'],
-  // watch: ['*.js', './public/**', '!bower_components'],
-  // tests: ['./test/**/*.js'],
   less: './client/less/*.less',
   html_template: './client/index.html',
   html: 'index.html',
@@ -25,8 +23,8 @@ gulp.task('nodemon', function(cb) {
 
   return $.nodemon({
     script: 'app.js'
-
-  }).on('start', function() {
+  })
+  .on('start', function() {
     // to avoid nodemon being started multiple times
     if (!started) {
       cb();
@@ -38,8 +36,6 @@ gulp.task('nodemon', function(cb) {
 gulp.task('lint', function() {
   return gulp.src(paths.lint)
     .pipe($.jshint('.jshintrc'))
-    // .pipe($.plumber(plumberConf))
-    // .pipe($.jscs())
     .pipe($.jshint.reporter('jshint-stylish'));
 });
 
@@ -56,11 +52,7 @@ gulp.task('less', function() {
 });
 
 gulp.task('inject', function() {
-  // .pipe($.angularFilesort()).on('error', conf.errorHandler('AngularFilesort'));
   var inject_res = gulp.src(['./public/app/**/*.js', './public/css/**/*.css'], {read: false});
-
-  // var options = config.getWiredeFpDefaultOptions();
-  // options.directory = 'public/bower_components';
 
   return gulp.src('./public/index.html')
     .pipe($.inject(inject_res, { addRootSlash: false, read: false, relative: true }))
@@ -71,31 +63,17 @@ gulp.task('inject', function() {
     .pipe(gulp.dest('./public'));
 });
 
-// gulp.task('minify', ['less'], function() {
-//   return gulp.src('less/*.scss')
-//     .pipe(less())
-//     .pipe(autoprefixer({
-//       browsers: ['last 2 versions'],
-//       cascade: false
-//     }))
-//     .pipe(gulp.dest('public/build'))
-//     .pipe(browserSync.stream());
-// });
-
-// gulp.task('clean', function () {
-//   del(['./public/css/*']);
-// });
-
 // Static Server + watching scss/html files
 gulp.task('serve', ['less', 'inject', 'nodemon'], function() {
-  browserSync.init({
-    browser: ['firefox'],
-    server: './public',
-    port: '3000'
-  });
+    browserSync.init(null, {
+      proxy: "http://localhost:" + process.env.PORT,
+      files: ['public/**/*.*'],
+      browser: ['firefox'],
+      port: 5000
+    });
 
-  gulp.watch(paths.less, ['less']);
-  gulp.watch([paths.html, './public/app/**/*']).on('change', browserSync.reload);
+    gulp.watch(paths.less, ['less']);
+    gulp.watch([paths.html, './public/app/**/*']).on('change', browserSync.reload);
 });
 
 gulp.task('start', ['less'], function() {});

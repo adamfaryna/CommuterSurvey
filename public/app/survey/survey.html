@@ -4,10 +4,10 @@
   <div ng-show="userName">
     <h2>Hi {{userName}}! Please tell us how you got to work this morning</h2>
 
-    <div ng-repeat="option in moodOptions">
+    <div ng-repeat="transportType in transportTypes">
       <label>
-        <input type="radio" ng-model="userMood" ng-checked="$first">
-        {{option.name}}
+        <input type="radio" name="userTransport" ng-model="$parent.userTransport" ng-value="transportType.id">
+        {{transportType.name}}
       </label>
     </div>
 

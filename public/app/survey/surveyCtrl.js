@@ -1,20 +1,33 @@
-app.controller('surveyCtrl', ['$scope', '$state', function($scope, $state) {
+app.controller('SurveyCtrl', ['$scope', '$rootScope', '$state', 'RestService', function($scope, $rootScope, $state, RestService) {
   'use strict';
 
-  // $scope.userName
-  // $scope.userMood
-  $scope.moodOptions = [];
+  $scope.transportTypes = [];
 
-  angular.forEach(['Walk', 'Cycle', 'Car', 'Train', 'Motorbike', 'Tram', 'Other'], function(item) {
-    $scope.moodOptions.push(new MoodOption(item, 0));
-  });
+  $rootScope.userData = $rootScope.userData || {};
 
-  function MoodOption(name, count) {
-    this.name = name;
-    this.count = count;
+  if ($rootScope.userData.userName) {
+    $scope.userName = $rootScope.userData.userName;
   }
 
+  $scope.userTransport = $rootScope.userData.userTransport || 1;
+
   $scope.onSubmit = function() {
-    $state.go('results');
+    var data = {
+      "name": $scope.userName,
+      "transportId": $scope.userTransport
+    };
+
+    RestService.call('addSurvey', 'PUT', data, function(data) {
+      $rootScope.userData.userName = $scope.userName;
+      $rootScope.userData.userTransport = $scope.userTransport;
+      
+      $state.go('results');
+    });
   };
+
+  (function() {
+    RestService.call('listTransportTypes', 'GET', null, function(data) {
+      $scope.transportTypes = JSON.parse(data.data);
+    });
+  })();
 }]);

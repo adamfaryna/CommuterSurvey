@@ -1,0 +1,22 @@
+[{
+  "id": 1,
+  "name": "Walk"
+}, {
+  "id": 2,
+  "name": "Cycle"
+}, {
+  "id": 3,
+  "name": "Car"
+}, {
+  "id": 4,
+  "name": "Train"
+}, {
+  "id": 5,
+  "name": "Motorbike"
+}, {
+  "id": 6,
+  "name": "Tram"
+}, {
+  "id": 7,
+  "name": "Other"
+}]
