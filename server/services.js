@@ -1,5 +1,7 @@
 'use strict';
 
+var _ =require('lodash');
+
 module.exports = function(app) {
   var db = require('./database')(app.locals.rootPath);
 
@@ -13,22 +15,26 @@ module.exports = function(app) {
   });
 
   app.get('/listSurveys', function(req, res) {
-    // surveys.mapReduce(
-    //   (obj) => {
-    //     return obj;
-    //   }, (array) => {
-    //     var result = {};
-    //     for (var i in array) {
-    //       var elem = array[i];
-    //       result[elem] = result[elem] ? result[elem] + 1 : 1;
-    //     }
-    //   }
-    // )
+    var result = {};
 
-  	// var transports = db.getCollection('transport');
-  	// var surveys = db.getCollection('survey');
+    db.listTransportTypes().forEach(
+      (trans) => {
+        result[trans.id] = {
+          name: trans.name,
+          quantity: 0
+        }
+      }
+    );
 
-  	// transports.eqJoin(surveys.data, "name", "userTransport", function(l, r) {
+    db.listSurveys().forEach((survey) => {
+      if (result[survey.transportId].quantity) {
+        result[survey.transportId].quantity += 1;
+      
+      } else {
+        result[survey.transportId].quantity = 1;
+      }
+    });
 
-	});
+    res.json(JSON.stringify(_.values(result)));
+  });
 };

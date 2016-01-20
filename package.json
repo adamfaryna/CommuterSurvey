@@ -1,11 +1,11 @@
 {
-  "name": "small-task",
+  "name": "commuter-survey",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "gulp start && node app.js",
-    "serve": "PORT=7000 gulp serve",
-    "debug": "gulp start && node-debug app.js"
+    "debug": "gulp start && node-debug app.js",
+    "serve": "PORT=7000 gulp serve"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

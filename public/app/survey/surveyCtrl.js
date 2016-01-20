@@ -29,5 +29,9 @@ app.controller('SurveyCtrl', ['$scope', '$rootScope', '$state', 'RestService', f
     RestService.call('listTransportTypes', 'GET', null, function(data) {
       $scope.transportTypes = JSON.parse(data.data);
     });
+
+    $(function() {
+      $('#userName').focus();
+    });
   })();
 }]);
