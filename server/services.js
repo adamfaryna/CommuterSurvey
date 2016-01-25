@@ -1,20 +1,20 @@
 'use strict';
 
-var _ =require('lodash');
+var _ = require('lodash');
 
-module.exports = function(app) {
+module.exports = (app) => {
   var db = require('./database')(app.locals.rootPath);
 
-  app.get('/listTransportTypes', function(req, res) {
+  app.get('/listTransportTypes', (req, res) => {
     res.json(JSON.stringify(db.listTransportTypes()));
   });
 
-  app.put('/addSurvey', function(req, res) {
+  app.put('/addSurvey', (req, res) => {
     db.insertSurvey(req.body);
     res.end();
   });
 
-  app.get('/listSurveys', function(req, res) {
+  app.get('/listSurveys', (req, res) => {
     var result = {};
 
     db.listTransportTypes().forEach(

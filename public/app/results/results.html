@@ -3,7 +3,7 @@
   <div id="result-graph-legend" ng-repeat="result in results">
     <div>{{result.type}} - {{result.quantity}} people</div>
   </div>
-  <div id="result"></div>
+  <my-chart id="result" json-data="{{jsonData}}"></my-chart>
 </div>
 
 <a href ng-click="voteAgain()">Vote Again</a>

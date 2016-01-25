@@ -2,6 +2,7 @@
   "name": "commuter-survey",
   "version": "1.0.0",
   "private": true,
+  "author": "Adam Faryna (https://github.com/adamfaryna)",
   "scripts": {
     "start": "gulp start && node app.js",
     "debug": "gulp start && node-debug app.js",

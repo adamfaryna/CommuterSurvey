@@ -3,7 +3,7 @@
 var fs = require('fs');
 var loki = require('lokijs');
 
-module.exports = function(dbPath) {
+module.exports = (dbPath) => {
   var filepath = dbPath + '/db.json';
   var db = initDB();
   var surveys = db.getCollection('survey');
@@ -31,7 +31,7 @@ module.exports = function(dbPath) {
       var data = fs.readFileSync(__dirname + '/data/' + collectionName + '.json', 'utf8');
       data = JSON.parse(data);
 
-      data.forEach(function(elem) {
+      data.forEach((elem) => {
         collection.insert(elem);
       });
     }
@@ -40,15 +40,15 @@ module.exports = function(dbPath) {
   }
 
   return {
-    insertSurvey: function(survey) {
+    insertSurvey: (survey) => {
       surveys.insert(survey);
     },
 
-    listSurveys: function() {
+    listSurveys: () => {
       return surveys.data;
     },
 
-    listTransportTypes: function() {
+    listTransportTypes: () => {
       return transportTypes.data;
     }
   };
