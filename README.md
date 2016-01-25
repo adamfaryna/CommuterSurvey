@@ -1,6 +1,10 @@
 # Commuter Survey - MEAN (almost) stack example
 
-This is MEAN stack example project build with: Node.JS, Angular.JS, Express, JShint, Less, Gulp.JS, BrowserSync, Loki.JS, jQuery, D3.JS.
+This is MEAN stack example project with Node.JS, Angular.JS, Express, Jshint, Less, Gulp.JS, browserSync, Loki.JS, jQuery, D3.JS.
+
+
+
+
 
 
 Feel free to use it if you want.
